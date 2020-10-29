@@ -73,8 +73,16 @@ public class Main implements Runnable, ActionListener{
 
 
     // initialize the JButtons
-    validateButton = new JButton();
-    resetButton = new JButton();
+    validateButton = new JButton("Validate");
+    resetButton = new JButton("Reset");
+
+    // add actionListener to the buttons
+    validateButton.addActionListener(this);
+    resetButton.addActionListener(this);
+
+    // give each button an action command
+    validateButton.setActionCommand("validate");
+    resetButton.setActionCommand("reset");
 
     // set the location and size of the buttons
     validateButton.setBounds(320, 10, 100, 35);
@@ -106,12 +114,51 @@ public class Main implements Runnable, ActionListener{
 
 
   }
+  // checks to see if a triangle with the lengths a, b, and c are valid
+  public boolean isValidTriangle(int a, int b, int c){
+    // using the triangle inequality to determine if it is valid
+    if( a + b > c && a + c > b && b + c > a){
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   // method called when a button is pressed
   public void actionPerformed(ActionEvent e){
     // get the command from the action
     String command = e.getActionCommand();
 
+    if( command.equals("validate")){
+      // the validate button was pressed
+      // get all of the input as a String
+      String firstText = firstSideInput.getText();
+      String secondText = secondSideInput.getText();
+      String thirdText = thirdSideInput.getText();
+
+      // convert those to integers
+      int firstSide = Integer.parseInt(firstText);
+      int secondSide = Integer.parseInt(secondText);
+      int thirdSide = Integer.parseInt(thirdText);
+
+      // determine if valid triangle
+      boolean isValid = isValidTriangle(firstSide, secondSide, thirdSide);
+
+      // let the user know if the triangle is a valid one or not
+      if (isValid){
+        outputText.setText("This triangle is valid");
+      } else {
+        outputText.setText("This triangle is invalid");
+      }
+
+
+    }else if ( command.equals("reset")){
+      // the reset button was pressed
+      firstSideInput.setText("");
+      secondSideInput.setText("");
+      thirdSideInput.setText("");
+      outputText.setText("");
+    }
   }
 
   // Main method to start our program
